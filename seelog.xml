@@ -1,0 +1,21 @@
+<seelog type="sync" minlevel="debug" maxlevel="error">
+    <outputs formatid="main">
+        <console/>
+        <!--<rollingfile>滚动文件(定期清除过期日志)
+        formatid:指定日志格式;type="size"按大小;maxsize:单日志文件最大大小;maxrools:最大文件数-->
+        <rollingfile
+                formatid="main"
+                type="date"
+                filename="./logs/log"
+                maxrolls="30"
+                datepattern="2006-01-02"
+                archivetype="zip"
+                fullname="true"
+                namemode="prefix"
+        />
+    </outputs>
+    <formats>
+        <!--设置格式-->
+        <format id="main" format="%Date %Time[%Level]%RelFile#%Line:%Msg%n"/>
+    </formats>
+</seelog>

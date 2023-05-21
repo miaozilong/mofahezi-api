@@ -1,0 +1,9 @@
+GET http://localhost:8080/getUpdateMD5?deviceName=device00000
+Accept: application/json
+
+###
+
+GET http://localhost:8080/getUpdateFile?deviceName=device00000
+Accept: application/json
+
+###
