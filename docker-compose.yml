@@ -1,0 +1,2 @@
+web-monitor:
+  image: miaozilong/mofahezi-api:latest
