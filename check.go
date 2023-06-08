@@ -130,7 +130,7 @@ func checkUpdate() {
 				return
 			}
 			log.Info("升级成功(执行重启之前),md5为:" + fileMd5)
-			sendMail("升级成功", "设备名称:"+getHostName()+",升级包的md5值为:"+fileMd5)
+			sendMail("升级成功", "设备名称:"+getHostName()+",升级包的md5值为:"+fileMd5+"，老的升级包的md5值为:"+localUpgradeMd5)
 			rebootCmd := exec.Command("reboot")
 			rebootErr := rebootCmd.Run()
 			if rebootErr != nil {

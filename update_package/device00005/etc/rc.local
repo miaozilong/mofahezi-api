@@ -1,3 +1,0 @@
-chmod +x /mofahezi/init.sh
-nohup sh /mofahezi/init.sh >/dev/null 2>&1 &
-exit 0
