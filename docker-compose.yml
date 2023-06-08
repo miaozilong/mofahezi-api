@@ -1,2 +1,2 @@
-web-monitor:
+mofahezi-api:
   image: miaozilong/mofahezi-api:latest
