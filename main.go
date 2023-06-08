@@ -137,14 +137,16 @@ func GetUpdateMD5(w http.ResponseWriter, req *http.Request) {
 	if deviceName != "" {
 		md5, readMd5FileErr := os.ReadFile("./update_package/" + deviceName + ".md5")
 		if readMd5FileErr != nil {
-			log.Debug(readMd5FileErr)
-			return
+			log.Debug("找不到指定设备的升级文件MD5，使用默认文件")
+			md5, _ = os.ReadFile("./update_package/" + "device00000" + ".md5")
 		}
 		w.Write(md5)
 	}
 }
 
 func GetUpdateFile(rsp http.ResponseWriter, req *http.Request) {
+	var err error
+	var b []byte
 	//获取请求参数
 	values := req.URL.Query()
 	deviceName := values.Get("deviceName")
@@ -153,7 +155,10 @@ func GetUpdateFile(rsp http.ResponseWriter, req *http.Request) {
 	header.Add("Content-Type", "application/octet-stream")
 	fileSuffix := ".tar.gz"
 	header.Add("Content-Disposition", "attachment;filename="+deviceName+fileSuffix)
-	b, _ := os.ReadFile("./update_package/" + deviceName + fileSuffix)
+	if b, err = os.ReadFile("./update_package/" + deviceName + fileSuffix); err != nil {
+		log.Debug("找不到指定设备的升级文件tar.gz，使用默认文件")
+		b, _ = os.ReadFile("./update_package/" + "device00000" + fileSuffix)
+	}
 	//写入到响应流中
 	rsp.Write(b)
 }
