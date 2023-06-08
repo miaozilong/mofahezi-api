@@ -1,8 +1,4 @@
 mofahezi-api:
   image: miaozilong/mofahezi-api:latest
-  networks:
-    - host
-networks:
-  host:
-    name: host
-    external: true
+  ports:
+    - "8080:8080"
