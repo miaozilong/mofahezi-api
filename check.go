@@ -15,8 +15,7 @@ import (
 
 func init() {
 	// 等系统启动完成  否则时间不准  休息10秒
-	// todo
-	time.Sleep(1 * time.Second)
+	time.Sleep(10 * time.Second)
 	logger, err := log.LoggerFromConfigAsFile("seelog.xml")
 	if err != nil {
 		return
@@ -27,9 +26,8 @@ func init() {
 func main() {
 	log.Debug("进入main方法")
 	for {
-		// todo
 		log.Debug("开始休息30分")
-		time.Sleep(3 * time.Second)
+		time.Sleep(30 * time.Minute)
 		log.Debug("结束休息30分")
 		checkExpired()
 		checkUpdate()
