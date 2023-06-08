@@ -12,3 +12,6 @@ go build -trimpath -o bin/check.out check.go
 
 
 
+todo:
+
+编译的check.out最好直接放到device000000/mofahezi目录下
