@@ -14,6 +14,7 @@ import (
 )
 
 func main() {
+	log.Debug("程序启动")
 	//err := Dir(
 	//	"C:\\Users\\Administrator\\GolandProjects\\mofahezi-api\\update_package\\device00000",
 	//	"C:\\Users\\Administrator\\GolandProjects\\mofahezi-api\\update_package\\device00005")
