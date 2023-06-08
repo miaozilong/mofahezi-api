@@ -13,6 +13,14 @@ import (
 	"path"
 )
 
+func init() {
+	logger, err := log.LoggerFromConfigAsFile("seelog.xml")
+	if err != nil {
+		return
+	}
+	_ = log.ReplaceLogger(logger)
+	log.Info("项目启动")
+}
 func main() {
 	log.Debug("程序启动")
 	//err := Dir(
@@ -44,9 +52,9 @@ func main() {
 		}
 	}
 
-	//http.HandleFunc("/getUpdateMD5", GetUpdateMD5)
-	//http.HandleFunc("/getUpdateFile", GetUpdateFile)
-	//http.ListenAndServe(":8080", nil)
+	http.HandleFunc("/getUpdateMD5", GetUpdateMD5)
+	http.HandleFunc("/getUpdateFile", GetUpdateFile)
+	http.ListenAndServe(":8080", nil)
 }
 
 func FileMD5(filePath string) (string, error) {
