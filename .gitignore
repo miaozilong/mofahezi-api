@@ -20,3 +20,7 @@
 # Go workspace file
 go.work
 .idea
+
+*.tar.gz
+*.md5
+*.log
