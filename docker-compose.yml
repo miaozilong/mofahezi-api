@@ -1,4 +1,5 @@
-mofahezi-api:
-  image: miaozilong/mofahezi-api:latest
-  ports:
-    - "8080:8080"
+version: "3"
+services:
+  mofahezi-api:
+    image: miaozilong/mofahezi-api:latest
+    network_mode: "host"
