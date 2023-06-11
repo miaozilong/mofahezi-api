@@ -93,8 +93,8 @@ func checkUpdate() {
 	//		如果没有特殊的校验文件,则下载公共的校验文件
 	//	根据校验文件判断要不要更新
 	// 如果要更新,则下载更新文件
-	md5Url := "https://www.mofahezi.net/api/getUpdateMD5?deviceName=" + getHostName()
-	upgradeFileUrl := "https://www.mofahezi.net/api/getUpdateFile?deviceName=" + getHostName()
+	md5Url := "https://www.xiaolimofahezi.com/api/getUpdateMD5?deviceName=" + getHostName()
+	upgradeFileUrl := "https://www.xiaolimofahezi.com/api/getUpdateFile?deviceName=" + getHostName()
 	upgradeFilepath := "/mofahezi/upgrade.tar.gz"
 	// 创建 HTTP 请求
 	md5Resp, err := http.Get(md5Url)
