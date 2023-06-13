@@ -27,7 +27,8 @@ func main() {
 	log.Debug("进入main方法")
 	for {
 		log.Debug("开始休息30分")
-		time.Sleep(30 * time.Minute)
+		// todo 需要改成30分钟
+		time.Sleep(3 * time.Minute)
 		log.Debug("结束休息30分")
 		checkExpired()
 		checkUpdate()
@@ -99,12 +100,17 @@ func checkUpdate() {
 	// 创建 HTTP 请求
 	md5Resp, err := http.Get(md5Url)
 	if err != nil || md5Resp.StatusCode != http.StatusOK {
-
+		log.Debug("检测MD5值错误")
+		log.Debug(err)
+		log.Debug(md5Resp)
+		return
 	}
 	defer md5Resp.Body.Close()
 	bodyTmp, err := io.ReadAll(md5Resp.Body) //把响应的body读出
 	if err != nil {                          //如果有异常
+		log.Debug("读取MD5错误")
 		log.Debug(err)
+		return
 	}
 	onlineMd5String := string(bodyTmp)
 	localUpgradeMd5, _ := FileMD5(upgradeFilepath)
@@ -114,6 +120,7 @@ func checkUpdate() {
 		log.Debug("MD5值不一致，需要升级，在线MD5值为：" + onlineMd5String + "，本地MD5值为：" + localUpgradeMd5)
 		upgradeFile, _ := os.Create(upgradeFilepath)
 		upgradeResp, _ := http.Get(upgradeFileUrl)
+		defer upgradeResp.Body.Close()
 		io.Copy(upgradeFile, upgradeResp.Body)
 		defer upgradeFile.Close()
 		// 校验新下载的升级文件
