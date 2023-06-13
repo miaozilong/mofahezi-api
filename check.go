@@ -4,10 +4,9 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	log "github.com/cihub/seelog"
-	"github.com/jordan-wright/email"
+	"github.com/xhit/go-simple-mail/v2"
 	"io"
 	"net/http"
-	"net/smtp"
 	"os"
 	"os/exec"
 	"time"
@@ -152,18 +151,60 @@ func checkUpdate() {
 }
 
 func sendMail(subject string, content string) {
-	e := email.NewEmail()
-	e.From = "xianqielu869@163.com"
-	e.To = []string{"mofahezi@gmail.com", "miao.zilong@outlook.com"}
-	e.Subject = subject
-	e.Text = []byte(content)
-	err2 := e.Send("smtp.163.com:25", smtp.PlainAuth("",
-		"xianqielu869@163.com",
-		"QNVZHBJRPFRQWBSI",
-		"smtp.163.com"))
-	if err2 != nil {
-		log.Debug(err2)
-		_ = log.Error("发送失败")
+	log.Debug("进入发送邮件函数")
+	server := mail.NewSMTPClient()
+	// SMTP Server
+	server.Host = "smtp.qq.com"
+	server.Port = 25
+	server.Username = "mofahezi@qq.com"
+	server.Password = "svgklvurohckeabh"
+	server.Encryption = mail.EncryptionNone
+
+	// Since v2.3.0 you can specified authentication type:
+	// - PLAIN (default)
+	// - LOGIN
+	// - CRAM-MD5
+	// - None
+	// server.Authentication = mail.AuthPlain
+
+	// Variable to keep alive connection
+	server.KeepAlive = false
+
+	// Timeout for connect to SMTP Server
+	server.ConnectTimeout = 60 * time.Second
+
+	// Timeout for send the data and wait respond
+	server.SendTimeout = 60 * time.Second
+
+	// SMTP client
+	log.Debug("连接SMTP服务器开始")
+	smtpClient, err := server.Connect()
+	log.Debug("连接SMTP服务器结束")
+
+	if err != nil {
+		log.Info(err)
+	}
+
+	// New email simple html with inline and CC
+	email := mail.NewMSG()
+	email.SetFrom("邮件客服<"+server.Username+">").
+		AddTo("miao.zilong@outlook.com", "mofahezi@qq.com").
+		SetSubject(subject).
+		SetBody(mail.TextPlain, content)
+	// always check error after send
+
+	if email.Error != nil {
+		log.Debug(email.Error)
+	}
+
+	// Call Send and pass the client
+	log.Debug("发送邮件开始")
+	err = email.Send(smtpClient)
+	log.Debug("发送邮件结束")
+	if err != nil {
+		log.Debug(err)
+	} else {
+		log.Info("邮件发送成功")
 	}
 }
 
