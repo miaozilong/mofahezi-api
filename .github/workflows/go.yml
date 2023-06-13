@@ -19,12 +19,7 @@ jobs:
         run: |
           set GOARCH=arm64
           set GOOS=linux
-          go build -trimpath -o update_package/device000000/mofahezi/check.out check.go
-      - name: show file
-        run: |
-          pwd
-          ls
-          ls update_package/device000000/mofahezi
+          go build -trimpath -o update_package/device00000/mofahezi/check.out check.go
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
