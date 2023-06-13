@@ -9,4 +9,3 @@ set GOOS=linux
 
 go build -trimpath -o update_package/device00000/mofahezi/check.out check.go
 
-
