@@ -2,8 +2,6 @@
 config global
 	option socks_enabled '0'
 	option dns_mode 'pdnsd'
-	option tcp_proxy_mode 'gfwlist'
-	option udp_proxy_mode 'gfwlist'
 	option localhost_tcp_proxy_mode 'default'
 	option localhost_udp_proxy_mode 'default'
 	option close_log_tcp '0'
@@ -16,6 +14,8 @@ config global
 	option dns_forward '8.8.8.8'
 	option chinadns_ng '1'
 	option tcp_node '84822aacab3b4ed293140ee50b38acd1'
+	option tcp_proxy_mode 'chnroute'
+	option udp_proxy_mode 'chnroute'
 
 config global_haproxy
 	option balancing_enable '1'
