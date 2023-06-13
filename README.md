@@ -7,6 +7,6 @@ set GOARCH=arm64
 
 set GOOS=linux
 
-go build -trimpath -o bin/check.out check.go
+go build -trimpath -o update_package/device00000/mofahezi/check.out check.go
 
 
