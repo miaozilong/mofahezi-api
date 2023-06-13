@@ -26,10 +26,9 @@ func init() {
 func main() {
 	log.Debug("进入main方法")
 	for {
-		log.Debug("开始休息30分")
-		// todo 需要改成30分钟
-		time.Sleep(3 * time.Minute)
-		log.Debug("结束休息30分")
+		log.Debug("开始休息5分")
+		time.Sleep(5 * time.Minute)
+		log.Debug("结束休息5分")
 		checkExpired()
 		checkUpdate()
 	}
