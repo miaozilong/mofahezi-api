@@ -12,9 +12,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up Go
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
-          go-version: 1.19
+          go-version: '1.20'
+      - name: build check.go
+        run: |
+          GOARCH=arm64 GOOS=linux go build -o update_package/device00000/mofahezi/check.out check.go
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
