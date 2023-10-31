@@ -186,7 +186,7 @@ func sendMail(subject string, content string) {
 	// New email simple html with inline and CC
 	email := mail.NewMSG()
 	email.SetFrom("邮件客服<"+server.Username+">").
-		AddTo("miao.zilong@outlook.com", "mofahezi@qq.com").
+		AddTo("miaozilong@gmail.com", "mofahezi@qq.com").
 		SetSubject(subject).
 		SetBody(mail.TextPlain, content)
 	// always check error after send
