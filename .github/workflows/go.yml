@@ -52,4 +52,5 @@ jobs:
           script: |
             cd mofahezi-api
             docker-compose pull
+            docker image prune -f
             docker-compose up -d
