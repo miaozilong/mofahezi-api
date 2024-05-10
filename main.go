@@ -1,6 +1,8 @@
 package main
 
 import (
+	"archive/tar"
+	"compress/gzip"
 	"crypto/md5"
 	"encoding/hex"
 	"fmt"
@@ -9,8 +11,9 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
-	"os/exec"
 	"path"
+	"path/filepath"
+	"time"
 )
 
 func init() {
@@ -40,12 +43,9 @@ func main() {
 			if v.Name() != "device00000" {
 				Dir("update_package/device00000", "update_package/"+v.Name())
 			}
-			tarCmd := exec.Command("tar", "-zcf", "update_package/"+v.Name()+".tar.gz", "-C", "update_package/"+v.Name()+"/", ".")
-			if err := tarCmd.Run(); err != nil {
-				log.Debug("压缩失败")
-				return
-			}
-			if fileMD5, err = FileMD5("update_package/" + v.Name() + ".tar.gz"); err != nil {
+			gzFilePath := "update_package/" + v.Name() + ".tar.gz"
+			createTarGz("update_package/"+v.Name(), gzFilePath)
+			if fileMD5, err = FileMD5(gzFilePath); err != nil {
 				log.Debug("生成MD5失败")
 			}
 			os.WriteFile("update_package/"+v.Name()+".md5", []byte(fileMD5), 0666)
@@ -161,4 +161,72 @@ func GetUpdateFile(rsp http.ResponseWriter, req *http.Request) {
 	}
 	//写入到响应流中
 	rsp.Write(b)
+}
+
+// 创建tar.gz文件
+func createTarGz(sourceDir string, targetFile string) error {
+	// 创建目标文件
+	target, err := os.Create(targetFile)
+	if err != nil {
+		return err
+	}
+	defer target.Close()
+
+	// 创建gzip压缩器
+	gzipWriter := gzip.NewWriter(target)
+	defer gzipWriter.Close()
+
+	// 创建tar文件写入器
+	tarWriter := tar.NewWriter(gzipWriter)
+	defer tarWriter.Close()
+
+	// 遍历源目录中的所有文件
+	err = filepath.Walk(sourceDir, func(filePath string, fileInfo os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		// 忽略目录
+		if fileInfo.IsDir() {
+			return nil
+		}
+
+		// 打开文件
+		file, err := os.Open(filePath)
+		if err != nil {
+			return err
+		}
+		defer file.Close()
+
+		// 创建tar文件头
+		header, err := tar.FileInfoHeader(fileInfo, fileInfo.Name())
+		if err != nil {
+			return err
+		}
+
+		// 修改头部名称为文件名，去掉文件名中的路径信息
+		header.Name = fileInfo.Name()
+
+		// 设置修改时间和权限为固定值
+		header.ModTime = time.Unix(0, 0)
+		header.Mode = 0644
+
+		// 写入头部信息
+		if err := tarWriter.WriteHeader(header); err != nil {
+			return err
+		}
+
+		// 写入文件内容
+		if _, err := io.Copy(tarWriter, file); err != nil {
+			return err
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
