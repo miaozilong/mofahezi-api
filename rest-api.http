@@ -7,3 +7,4 @@ GET http://localhost:8080/getUpdateFile?deviceName=device00000
 Accept: application/json
 
 ###
+http://upgrade-mofahezi.xiaolimofahezi.com:8080/getUpdateFile?deviceName=device00004
