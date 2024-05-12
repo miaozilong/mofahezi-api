@@ -13,6 +13,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -205,7 +206,8 @@ func createTarGz(sourceDir string, targetFile string) error {
 		}
 
 		// 修改头部名称为文件名，去掉文件名中的路径信息
-		header.Name = fileInfo.Name()
+		//header.Name = fileInfo.Name()
+		header.Name = strings.TrimPrefix(filePath, sourceDir)
 
 		// 设置修改时间和权限为固定值
 		header.ModTime = time.Unix(0, 0)
